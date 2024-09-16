@@ -6,15 +6,17 @@ window.onload = async function () {
     const uap = new UAParser(navigator.userAgent);
     let osName = uap.getOS().name || "unknown";
     let cpuName = uap.getCPU().architecture || "unknown";
-
+    console.log("Before normalization: OS ->", osName, "CPU ->", cpuName);
     if (osName === "unknown" || cpuName === "unknown") {
-      const details = await navigator?.userAgentData?.getHighEntropyValues([
-        "architecture",
-        "platform",
-      ]);
-
-      osName = osName || details.platform;
-      cpuName = cpuName || details.architecture;
+      if (navigator?.userAgentData) {
+        const details = await navigator.userAgentData.getHighEntropyValues([
+          "architecture",
+          "platform",
+        ]);
+        osName = details?.platform || osName;
+        cpuName = details?.architecture || cpuName;
+        console.log("UserAgentData details:", details);
+      }
     }
 
     osName = osName.toLowerCase();
