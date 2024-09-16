@@ -68,7 +68,13 @@ window.onload = async function () {
     }
 
     document.querySelector("#version").textContent = versionText || "N/A";
-    document.querySelector("#data").textContent = details;
+    // document.querySelector("#data").textContent = details.JSON.stringify();
+    document.querySelector("#data").textContent = JSON.stringify(
+      details,
+      null,
+      2
+    );
+
     document.querySelector("#platform").textContent = platformText;
     document.querySelector("#package").textContent = packageText;
 
