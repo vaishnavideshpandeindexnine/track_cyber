@@ -9,17 +9,17 @@ window.onload = async function () {
     console.log("Before normalization: OS ->", osName, "CPU ->", cpuName);
 
     // Try to get more details using navigator.userAgentData if needed
-    if (cpuName === "unknown") {
-      if (navigator?.userAgentData) {
-        const details = await navigator.userAgentData.getHighEntropyValues([
-          "architecture",
-          "platform",
-        ]);
-        osName = details?.platform || osName;
-        cpuName = details?.architecture || cpuName;
-        console.log("UserAgentData details:", details);
-      }
-    }
+    // if (cpuName === "unknown") {
+    //   if (navigator?.userAgentData) {
+    //     const details = await navigator.userAgentData.getHighEntropyValues([
+    //       "architecture",
+    //       "platform",
+    //     ]);
+    //     osName = details?.platform || osName;
+    //     cpuName = details?.architecture || cpuName;
+    //     console.log("UserAgentData details:", details);
+    //   }
+    // }
 
     osName = osName.toLowerCase();
     cpuName = cpuName.toLowerCase();
