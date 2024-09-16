@@ -87,6 +87,7 @@ window.onload = async function () {
         }
       });
   } catch (error) {
+    alert(error.message);
     alert("Error fetching data or processing user-agent:", error.toString());
   }
 };
