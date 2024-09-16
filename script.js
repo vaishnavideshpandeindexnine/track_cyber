@@ -60,6 +60,7 @@ window.onload = async function () {
       osName.includes("mac") &&
       (cpuName === "unknown" || cpuName === "N/A")
     ) {
+      platformText = "Mac OS";
       defaultDownloadButton.style.display = "none";
       macDownloadButtons.style.display = "block";
 
@@ -70,7 +71,7 @@ window.onload = async function () {
       appleSiliconButton.addEventListener("click", function () {
         window.location.href = data.macOS.AppleSilicon.link;
       });
-      platformText = "Mac OS";
+
       // packageText = data.macOS.package;
       // versionText = data.macOS.version;
     } else {
