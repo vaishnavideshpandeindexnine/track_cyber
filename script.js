@@ -2,16 +2,31 @@ window.onload = async function () {
   const response = await fetch("data.json");
   const data = await response.json();
   const uap = new UAParser(navigator);
-  console.log(uap.getResult());
+  // console.log(uap.getResult());
 
   const { name: osName } = uap.getOS();
   const cpuName = uap.getCPU().architecture;
-
+  uap.withClientHints().then(function (result) {
+    var CPU = result.cpu.architecture;
+    console.log("CPU", CPU);
+    // returns "arm64" on macOS ARM
+  });
   let downloadUrl = "#";
   let platformText = "Unknown";
   let packageText = "N/A";
   let versionText = "N/A";
 
+  // Detect architecture for macOS manually if necessary
+  if (osName === "macOS" && cpuName === "unknown") {
+    // Example of hardcoding values or setting based on user-agent patterns
+    // You might need more robust logic depending on user-agent patterns
+    const userAgent = navigator.userAgent;
+    if (/Intel/.test(userAgent)) {
+      cpuName = "amd64";
+    } else if (/Apple/.test(userAgent)) {
+      cpuName = "arm64";
+    }
+  }
   switch (osName) {
     case "Windows":
       downloadUrl = data.Windows.link;
