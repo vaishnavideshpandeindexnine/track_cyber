@@ -9,7 +9,7 @@ window.onload = async function () {
     console.log("Before normalization: OS ->", osName, "CPU ->", cpuName);
 
     // Try to get more details using navigator.userAgentData if needed
-    if (osName === "unknown" || cpuName === "unknown") {
+    if (cpuName === "unknown") {
       if (navigator?.userAgentData) {
         const details = await navigator.userAgentData.getHighEntropyValues([
           "architecture",
