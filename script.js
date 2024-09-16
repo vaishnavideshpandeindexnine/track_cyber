@@ -68,7 +68,6 @@ window.onload = async function () {
     }
 
     document.querySelector("#version").textContent = versionText || "N/A";
-    // document.querySelector("#data").textContent = details.JSON.stringify();
     document.querySelector("#data").textContent = JSON.stringify(
       details,
       null,
@@ -88,6 +87,6 @@ window.onload = async function () {
         }
       });
   } catch (error) {
-    console.error("Error fetching data or processing user-agent:", error);
+    alert("Error fetching data or processing user-agent:", error.toString());
   }
 };
