@@ -61,6 +61,8 @@ window.onload = async function () {
       (cpuName === "unknown" || cpuName === "N/A")
     ) {
       platformText = "Mac OS";
+      console.log("Called");
+
       defaultDownloadButton.style.display = "none";
       macDownloadButtons.style.display = "block";
 
