@@ -58,7 +58,10 @@ window.onload = async function () {
       cpuName = "N/A";
     }
 
-    if (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) {
+    if (
+      osName.includes("mac") &&
+      (cpuName === "unknown" || cpuName === "N/A")
+    ) {
       // Third case: macOS detected but CPU architecture is unknown
       defaultDownloadButton.style.display = "none";
       macDownloadButtons.style.display = "block";
