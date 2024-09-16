@@ -17,7 +17,7 @@ window.onload = async function () {
     //   }
     // }
 
-    const details = await navigator.userAgentData.getHighEntropyValues([
+    const details = await navigator?.userAgentData?.getHighEntropyValues([
       "architecture",
     ]);
 
