@@ -1,10 +1,8 @@
 window.onload = async function () {
   try {
-    // Fetch data from the JSON file
     const response = await fetch("data.json");
     const data = await response.json();
 
-    // Initialize UAParser
     const uap = new UAParser(navigator.userAgent);
     const { name: osName } = uap.getOS();
     let cpuName = uap.getCPU().architecture || "unknown";
@@ -60,7 +58,6 @@ window.onload = async function () {
         downloadUrl = "#";
     }
 
-    // Update the UI with the fetched data
     document.querySelector("#version").textContent = versionText || "N/A";
     document.querySelector("#platform").textContent = platformText;
     document.querySelector("#package").textContent = packageText;
