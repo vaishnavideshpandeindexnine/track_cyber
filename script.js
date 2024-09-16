@@ -8,18 +8,23 @@ window.onload = async function () {
     let cpuName = uap.getCPU().architecture || "unknown";
 
     // Check CPU architecture manually if necessary
-    if (osName === "macOS" && cpuName === "unknown") {
-      const userAgent = navigator.userAgent;
-      if (/Intel/.test(userAgent)) {
-        cpuName = "amd64";
-      } else if (/Apple/.test(userAgent)) {
-        cpuName = "arm64";
-      }
-    }
-    console.log(
-      await navigator.userAgentData.getHighEntropyValues(["architecture"])
-    );
+    // if (osName === "macOS" && cpuName === "unknown") {
+    //   const userAgent = navigator.userAgent;
+    //   if (/Intel/.test(userAgent)) {
+    //     cpuName = "amd64";
+    //   } else if (/Apple/.test(userAgent)) {
+    //     cpuName = "arm64";
+    //   }
+    // }
 
+    const details = await navigator.userAgentData.getHighEntropyValues([
+      "architecture",
+    ]);
+
+    console.log("Os Name", osName);
+    console.log("Architecture", cpuName);
+
+    console.log(details);
     let downloadUrl = "#";
     let platformText = "Unknown";
     let packageText = "N/A";
@@ -29,6 +34,7 @@ window.onload = async function () {
       case "Windows":
         downloadUrl = data.Windows.link;
         platformText = osName;
+        // platformText = details.platformText;
         packageText = data.Windows.package;
         versionText = data.Windows.version;
         break;
@@ -62,6 +68,7 @@ window.onload = async function () {
     }
 
     document.querySelector("#version").textContent = versionText || "N/A";
+    document.querySelector("#data").textContent = details;
     document.querySelector("#platform").textContent = platformText;
     document.querySelector("#package").textContent = packageText;
 
