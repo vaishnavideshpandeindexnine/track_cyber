@@ -36,7 +36,6 @@ window.onload = async function () {
     );
     const defaultDownloadButton = document.querySelector(".downloadButton");
 
-    // Normalize OS names
     if (osName.includes("mac")) {
       osName = "macOS";
     } else if (osName.includes("windows")) {
@@ -49,7 +48,6 @@ window.onload = async function () {
       osName = "N/A";
     }
 
-    // Normalize CPU architecture
     if (cpuName.includes("arm")) {
       cpuName = "arm64";
     } else if (cpuName.includes("x86") || cpuName.includes("amd64")) {
@@ -62,11 +60,9 @@ window.onload = async function () {
       osName.includes("mac") &&
       (cpuName === "unknown" || cpuName === "N/A")
     ) {
-      // Third case: macOS detected but CPU architecture is unknown
       defaultDownloadButton.style.display = "none";
       macDownloadButtons.style.display = "block";
 
-      // Set URLs for Intel and Apple Silicon buttons
       intelButton.addEventListener("click", function () {
         window.location.href = data.macOS.Intel.link;
       });
@@ -74,8 +70,10 @@ window.onload = async function () {
       appleSiliconButton.addEventListener("click", function () {
         window.location.href = data.macOS.AppleSilicon.link;
       });
+      platformText = "Mac OS";
+      // packageText = data.macOS.package;
+      // versionText = data.macOS.version;
     } else {
-      // Proceed with the normal flow if CPU is known
       switch (osName) {
         case "Windows":
           downloadUrl = data.Windows.link;
@@ -116,7 +114,6 @@ window.onload = async function () {
       document.querySelector("#platform").textContent = platformText || "N/A";
       document.querySelector("#package").textContent = packageText || "N/A";
 
-      // Default download button event
       defaultDownloadButton.addEventListener("click", function () {
         if (downloadUrl !== "#") {
           window.location.href = downloadUrl;
