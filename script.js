@@ -4,37 +4,51 @@ window.onload = async function () {
     const data = await response.json();
 
     const uap = new UAParser(navigator.userAgent);
-    const { name: osName } = uap.getOS();
+    let osName = uap.getOS().name || "unknown";
     let cpuName = uap.getCPU().architecture || "unknown";
 
-    // Check CPU architecture manually if necessary
-    // if (osName === "macOS" && cpuName === "unknown") {
-    //   const userAgent = navigator.userAgent;
-    //   if (/Intel/.test(userAgent)) {
-    //     cpuName = "amd64";
-    //   } else if (/Apple/.test(userAgent)) {
-    //     cpuName = "arm64";
-    //   }
-    // }
+    if (osName === "unknown" || cpuName === "unknown") {
+      const details = await navigator?.userAgentData?.getHighEntropyValues([
+        "architecture",
+        "platform",
+      ]);
 
-    const details = await navigator?.userAgentData?.getHighEntropyValues([
-      "architecture",
-    ]);
+      osName = details.platform || osName;
+      cpuName = details.architecture || cpuName;
+    }
 
-    console.log("Os Name", osName);
-    console.log("Architecture", cpuName);
+    osName = osName.toLowerCase();
+    cpuName = cpuName.toLowerCase();
 
-    console.log(details);
     let downloadUrl = "#";
     let platformText = "Unknown";
     let packageText = "N/A";
     let versionText = "N/A";
 
+    if (osName.includes("mac")) {
+      osName = "macOS";
+    } else if (osName.includes("windows")) {
+      osName = "Windows";
+    } else if (osName.includes("ios")) {
+      osName = "iOS";
+    } else if (osName.includes("android")) {
+      osName = "Android";
+    } else {
+      osName = "N/A";
+    }
+
+    if (cpuName.includes("arm")) {
+      cpuName = "arm64";
+    } else if (cpuName.includes("x86") || cpuName.includes("amd64")) {
+      cpuName = "amd64";
+    } else {
+      cpuName = "N/A";
+    }
+
     switch (osName) {
       case "Windows":
         downloadUrl = data.Windows.link;
         platformText = osName;
-        // platformText = details.platformText;
         packageText = data.Windows.package;
         versionText = data.Windows.version;
         break;
@@ -68,14 +82,8 @@ window.onload = async function () {
     }
 
     document.querySelector("#version").textContent = versionText || "N/A";
-    document.querySelector("#data").textContent = JSON.stringify(
-      details,
-      null,
-      2
-    );
-
-    document.querySelector("#platform").textContent = platformText;
-    document.querySelector("#package").textContent = packageText;
+    document.querySelector("#platform").textContent = platformText || "N/A";
+    document.querySelector("#package").textContent = packageText || "N/A";
 
     document
       .querySelector(".downloadButton")
@@ -87,7 +95,6 @@ window.onload = async function () {
         }
       });
   } catch (error) {
-    alert(error.message);
-    alert("Error fetching data or processing user-agent:", error.toString());
+    alert("Error fetching data or processing user-agent: " + error.message);
   }
 };
