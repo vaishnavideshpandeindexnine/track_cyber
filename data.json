@@ -1,0 +1,29 @@
+{
+  "Windows": {
+    "package": "TrackCyber.exe",
+    "link": "https://www.google.com/",
+    "version": "v1.0.0"
+  },
+  "macOS": {
+    "Intel": {
+      "package": "TrackCyber.dmg",
+      "link": "https://www.instagram.com/",
+      "version": "v1.0.0"
+    },
+    "AppleSilicon": {
+      "package": "TrackCyber.dmg",
+      "link": "https://www.facebook.com/",
+      "version": "v1.0.0"
+    }
+  },
+  "iOS": {
+    "package": "TrackCyber.ipa",
+    "link": "https://www.swiggy.com/",
+    "version": "v1.0.0"
+  },
+  "Android": {
+    "package": "TrackCyber.apk",
+    "link": "https://www.amazon.com/",
+    "version": "v1.0.0"
+  }
+}
