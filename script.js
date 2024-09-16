@@ -13,8 +13,8 @@ window.onload = async function () {
         "platform",
       ]);
 
-      osName = details.platform || osName;
-      cpuName = details.architecture || cpuName;
+      osName = osName || details.platform;
+      cpuName = cpuName || details.architecture;
     }
 
     osName = osName.toLowerCase();
