@@ -16,6 +16,9 @@ window.onload = async function () {
         cpuName = "arm64";
       }
     }
+    console.log(
+      await navigator.userAgentData.getHighEntropyValues(["architecture"])
+    );
 
     let downloadUrl = "#";
     let platformText = "Unknown";
