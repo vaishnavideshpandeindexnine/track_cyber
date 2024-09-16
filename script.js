@@ -1,7 +1,9 @@
 window.onload = async function () {
   const response = await fetch("data.json");
   const data = await response.json();
-  const uap = new UAParser();
+  const uap = new UAParser(navigator);
+  console.log(uap.getResult());
+
   const { name: osName } = uap.getOS();
   const cpuName = uap.getCPU().architecture;
 
