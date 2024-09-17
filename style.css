@@ -86,8 +86,8 @@
 /* Medium Devices (Tablets) */
 @media (max-width: 987.98px) {
   .image {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
   }
   .heading-h1-bold {
     font-size: 2rem;
