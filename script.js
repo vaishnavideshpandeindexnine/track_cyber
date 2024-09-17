@@ -69,14 +69,14 @@ function getPlatformDetails(osName, cpuName, data) {
           package: packageText,
           version: versionText,
         } = data.macOS.Intel);
-        platformText = "macOS (Intel)";
+        platformText = "MacOS (Intel)";
       } else if (cpuName === "arm64") {
         ({
           link: downloadUrl,
           package: packageText,
           version: versionText,
         } = data.macOS.AppleSilicon);
-        platformText = "macOS (Apple Silicon)";
+        platformText = "MacOS (Apple Silicon)";
       }
       break;
     case "iOS":
