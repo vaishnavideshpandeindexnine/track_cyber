@@ -60,6 +60,17 @@
   color: #171e3a;
 }
 
+.macButtons {
+  align-self: center;
+}
+.downloadButtonMac {
+  width: 17rem;
+  height: 3rem;
+  border-radius: 50px;
+  background-color: #250a7f;
+  color: white;
+}
+
 /* Responsive Design */
 
 /* Large Screens (Desktops) */
@@ -72,6 +83,10 @@
 
 /* Medium Devices (Tablets) */
 @media (max-width: 987.98px) {
+  .image {
+    width: 400px;
+    height: 400px;
+  }
   .heading-h1-bold {
     font-size: 2rem;
     line-height: 3rem;
@@ -90,7 +105,7 @@
     font-size: 1.125rem;
   }
 
-  .downloadButton {
+  .downloadButton .downloadButtonMac {
     height: 3.125rem;
   }
 }
@@ -119,7 +134,7 @@
     font-size: 1rem;
   }
 
-  .downloadButton {
+  .downloadButton .downloadButtonMac {
     height: 2.5rem;
     font-size: 1rem;
   }

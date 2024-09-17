@@ -2,13 +2,11 @@ window.onload = async function () {
   try {
     const response = await fetch("data.json");
     const data = await response.json();
-
     const uap = new UAParser(navigator.userAgent);
     let osName = uap.getOS().name || "unknown";
     let cpuName = uap.getCPU().architecture || "unknown";
     console.log("Before normalization: OS ->", osName, "CPU ->", cpuName);
 
-    // Try to get more details using navigator.userAgentData if needed
     // if (cpuName === "unknown") {
     //   if (navigator?.userAgentData) {
     //     const details = await navigator.userAgentData.getHighEntropyValues([
@@ -61,7 +59,14 @@ window.onload = async function () {
       (cpuName === "unknown" || cpuName === "N/A")
     ) {
       platformText = "Mac OS";
+      packageText = data.macOS.Intel.package;
+      versionText = data.macOS.Intel.version;
+
       console.log("Called");
+
+      document.querySelector("#platform").textContent = platformText;
+      document.querySelector("#package").textContent = packageText;
+      document.querySelector("#version").textContent = versionText;
 
       defaultDownloadButton.style.display = "none";
       macDownloadButtons.style.display = "block";
@@ -73,9 +78,6 @@ window.onload = async function () {
       appleSiliconButton.addEventListener("click", function () {
         window.location.href = data.macOS.AppleSilicon.link;
       });
-
-      // packageText = data.macOS.package;
-      // versionText = data.macOS.version;
     } else {
       switch (osName) {
         case "Windows":
