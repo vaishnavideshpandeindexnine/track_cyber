@@ -1,131 +1,161 @@
 window.onload = async function () {
   try {
-    const response = await fetch("data.json");
-    const data = await response.json();
-    const uap = new UAParser(navigator.userAgent);
-    let osName = uap.getOS().name || "unknown";
-    let cpuName = uap.getCPU().architecture || "unknown";
+    const data = await fetchData("data.json");
+    const { osName, cpuName } = await detectPlatform();
+    const { platformText, packageText, versionText, downloadUrl } =
+      getPlatformDetails(osName, cpuName, data);
 
-    // if (cpuName === "unknown") {
-    //   if (navigator?.userAgentData) {
-    //     const details = await navigator.userAgentData.getHighEntropyValues([
-    //       "architecture",
-    //       "platform",
-    //     ]);
-    //     osName = details?.platform || osName;
-    //     cpuName = details?.architecture || cpuName;
-    //   }
-    // }
-
-    osName = osName.toLowerCase();
-    cpuName = cpuName.toLowerCase();
-
-    let downloadUrl = "#";
-    let platformText = "Unknown";
-    let packageText = "N/A";
-    let versionText = "N/A";
-
-    const macDownloadButtons = document.getElementById("mac-download-buttons");
-    const intelButton = document.querySelector(".downloadIntelButton");
-    const appleSiliconButton = document.querySelector(
-      ".downloadAppleSiliconButton"
+    updateUI(
+      platformText,
+      packageText,
+      versionText,
+      downloadUrl,
+      osName,
+      cpuName,
+      data
     );
-    const defaultDownloadButton = document.querySelector(".downloadButton");
-
-    if (osName.includes("mac")) {
-      osName = "macOS";
-    } else if (osName.includes("windows")) {
-      osName = "Windows";
-    } else if (osName.includes("ios")) {
-      osName = "iOS";
-    } else if (osName.includes("android")) {
-      osName = "Android";
-    } else {
-      osName = "N/A";
-    }
-
-    if (cpuName.includes("arm")) {
-      cpuName = "arm64";
-    } else if (cpuName.includes("x86") || cpuName.includes("amd64")) {
-      cpuName = "amd64";
-    } else {
-      cpuName = "N/A";
-    }
-
-    if (
-      osName.includes("mac") &&
-      (cpuName === "unknown" || cpuName === "N/A")
-    ) {
-      platformText = "Mac OS";
-      packageText = data.macOS.Intel.package;
-      versionText = data.macOS.Intel.version;
-
-      console.log("Called");
-
-      document.querySelector("#platform").textContent = platformText;
-      document.querySelector("#package").textContent = packageText;
-      document.querySelector("#version").textContent = versionText;
-
-      defaultDownloadButton.style.display = "none";
-      macDownloadButtons.style.display = "block";
-
-      intelButton?.addEventListener("click", function () {
-        window.location.href = data.macOS.Intel.link;
-      });
-
-      appleSiliconButton?.addEventListener("click", function () {
-        window.location.href = data.macOS.AppleSilicon.link;
-      });
-    } else {
-      switch (osName) {
-        case "Windows":
-          downloadUrl = data.Windows.link;
-          platformText = osName;
-          packageText = data.Windows.package;
-          versionText = data.Windows.version;
-          break;
-        case "macOS":
-          if (cpuName === "amd64") {
-            downloadUrl = data.macOS.Intel.link;
-            platformText = `macOS (Intel)`;
-            packageText = data.macOS.Intel.package;
-            versionText = data.macOS.Intel.version;
-          } else if (cpuName === "arm64") {
-            downloadUrl = data.macOS.AppleSilicon.link;
-            platformText = `macOS (Apple Silicon)`;
-            packageText = data.macOS.AppleSilicon.package;
-            versionText = data.macOS.AppleSilicon.version;
-          }
-          break;
-        case "iOS":
-          downloadUrl = data.iOS.link;
-          platformText = osName;
-          packageText = data.iOS.package;
-          versionText = data.iOS.version;
-          break;
-        case "Android":
-          downloadUrl = data.Android.link;
-          platformText = osName;
-          packageText = data.Android.package;
-          versionText = data.Android.version;
-          break;
-        default:
-          downloadUrl = "#";
-      }
-
-      document.querySelector("#version").textContent = versionText || "N/A";
-      document.querySelector("#platform").textContent = platformText || "N/A";
-      document.querySelector("#package").textContent = packageText || "N/A";
-
-      defaultDownloadButton.addEventListener("click", function () {
-        if (downloadUrl !== "#") {
-          window.location.href = downloadUrl;
-        } else {
-          alert("Download URL not available.");
-        }
-      });
-    }
   } catch (error) {
     alert("Error fetching data or processing user-agent: " + error.message);
   }
 };
+
+async function fetchData(url) {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return response.json();
+}
+
+async function detectPlatform() {
+  const uap = new UAParser(navigator.userAgent);
+  let osName = uap.getOS().name || "unknown";
+  let cpuName = uap.getCPU().architecture || "unknown";
+
+  if (cpuName === "unknown" && navigator?.userAgentData) {
+    const details = await navigator.userAgentData.getHighEntropyValues([
+      "architecture",
+      "platform",
+    ]);
+    osName = details?.platform || osName;
+    cpuName = details?.architecture || cpuName;
+  }
+
+  return { osName: osName.toLowerCase(), cpuName: cpuName.toLowerCase() };
+}
+
+function getPlatformDetails(osName, cpuName, data) {
+  let platformText = "Unknown";
+  let packageText = "N/A";
+  let versionText = "N/A";
+  let downloadUrl = "#";
+
+  osName = normalizeOSName(osName);
+  cpuName = normalizeCPUName(cpuName);
+
+  switch (osName) {
+    case "Windows":
+      ({
+        link: downloadUrl,
+        package: packageText,
+        version: versionText,
+      } = data.Windows);
+      platformText = osName;
+      break;
+    case "macOS":
+      if (cpuName === "amd64") {
+        ({
+          link: downloadUrl,
+          package: packageText,
+          version: versionText,
+        } = data.macOS.Intel);
+        platformText = "macOS (Intel)";
+      } else if (cpuName === "arm64") {
+        ({
+          link: downloadUrl,
+          package: packageText,
+          version: versionText,
+        } = data.macOS.AppleSilicon);
+        platformText = "macOS (Apple Silicon)";
+      }
+      break;
+    case "iOS":
+      ({
+        link: downloadUrl,
+        package: packageText,
+        version: versionText,
+      } = data.iOS);
+      platformText = osName;
+      break;
+    case "Android":
+      ({
+        link: downloadUrl,
+        package: packageText,
+        version: versionText,
+      } = data.Android);
+      platformText = osName;
+      break;
+    default:
+      platformText = "N/A";
+  }
+
+  return { platformText, packageText, versionText, downloadUrl };
+}
+
+function normalizeOSName(osName) {
+  if (osName.includes("mac")) return "macOS";
+  if (osName.includes("windows")) return "Windows";
+  if (osName.includes("ios")) return "iOS";
+  if (osName.includes("android")) return "Android";
+  return "N/A";
+}
+
+function normalizeCPUName(cpuName) {
+  if (cpuName.includes("arm")) return "arm64";
+  if (cpuName.includes("x86") || cpuName.includes("amd64")) return "amd64";
+  return "N/A";
+}
+
+function updateUI(
+  platformText,
+  packageText,
+  versionText,
+  downloadUrl,
+  osName,
+  cpuName,
+  data
+) {
+  const macDownloadButtons = document.getElementById("mac-download-buttons");
+  const intelButton = document.querySelector(".downloadIntelButton");
+  const appleSiliconButton = document.querySelector(
+    ".downloadAppleSiliconButton"
+  );
+  const defaultDownloadButton = document.querySelector(".downloadButton");
+
+  document.querySelector("#platform").textContent = platformText || "N/A";
+  document.querySelector("#package").textContent = packageText || "N/A";
+  document.querySelector("#version").textContent = versionText || "N/A";
+
+  if (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) {
+    macDownloadButtons.style.display = "block";
+    defaultDownloadButton.style.display = "none";
+
+    intelButton?.addEventListener("click", function () {
+      window.location.href = data.macOS.Intel.link;
+    });
+
+    appleSiliconButton?.addEventListener("click", function () {
+      window.location.href = data.macOS.AppleSilicon.link;
+    });
+  } else {
+    macDownloadButtons.style.display = "none";
+
+    defaultDownloadButton.addEventListener("click", function () {
+      if (downloadUrl !== "#") {
+        window.location.href = downloadUrl;
+      } else {
+        alert("Download URL not available.");
+      }
+    });
+  }
+}
