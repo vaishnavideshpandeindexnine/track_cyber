@@ -1,29 +1,29 @@
 {
   "Windows": {
     "package": "TrackCyber.exe",
-    "link": "https://www.google.com/",
+    "link": "https://www.track_cyber.com/windows.exe/",
     "version": "v1.1.0"
   },
   "macOS": {
     "Intel": {
       "package": "TrackCyber.dmg",
-      "link": "https://www.instagram.com/",
+      "link": "https://www.track_cyber.com/mac_intel.dmg/",
       "version": "v2.0.6"
     },
     "AppleSilicon": {
       "package": "TrackCyber.dmg",
-      "link": "https://www.facebook.com/",
+      "link": "https://www.track_cyber.com/mac_apple.dmg/",
       "version": "v5.0.0"
     }
   },
   "iOS": {
     "package": "TrackCyber.ipa",
-    "link": "https://www.swiggy.com/",
+    "link": "https://www.track_cyber.com/ios.ipa/",
     "version": "v1.9.0"
   },
   "Android": {
     "package": "TrackCyber.apk",
-    "link": "https://www.amazon.com/",
+    "link": "https://www.track_cyber.com/android.apk/",
     "version": "v9.0.0"
   }
 }
