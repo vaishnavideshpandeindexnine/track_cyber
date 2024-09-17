@@ -37,6 +37,7 @@
   text-align: center;
   display: block;
   margin: 0 auto;
+  border: none;
 }
 
 .info-section {
@@ -69,6 +70,7 @@
   border-radius: 50px;
   background-color: #250a7f;
   color: white;
+  border: none;
 }
 
 /* Responsive Design */

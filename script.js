@@ -5,7 +5,6 @@ window.onload = async function () {
     const uap = new UAParser(navigator.userAgent);
     let osName = uap.getOS().name || "unknown";
     let cpuName = uap.getCPU().architecture || "unknown";
-    console.log("Before normalization: OS ->", osName, "CPU ->", cpuName);
 
     // if (cpuName === "unknown") {
     //   if (navigator?.userAgentData) {
@@ -15,7 +14,6 @@ window.onload = async function () {
     //     ]);
     //     osName = details?.platform || osName;
     //     cpuName = details?.architecture || cpuName;
-    //     console.log("UserAgentData details:", details);
     //   }
     // }
 
@@ -71,11 +69,11 @@ window.onload = async function () {
       defaultDownloadButton.style.display = "none";
       macDownloadButtons.style.display = "block";
 
-      intelButton.addEventListener("click", function () {
+      intelButton?.addEventListener("click", function () {
         window.location.href = data.macOS.Intel.link;
       });
 
-      appleSiliconButton.addEventListener("click", function () {
+      appleSiliconButton?.addEventListener("click", function () {
         window.location.href = data.macOS.AppleSilicon.link;
       });
     } else {
