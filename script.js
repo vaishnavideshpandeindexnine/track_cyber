@@ -132,6 +132,26 @@ function updateUI(
   );
   const defaultDownloadButton = document.querySelector(".downloadButton");
 
+  const qrSection = document.getElementById("qr-section");
+  const qrTitle = document.getElementById("qr-title");
+  const qrSubtitle = document.getElementById("qr-subtitle");
+  const qrImage = document.getElementById("qr-image");
+
+  if (osName === "ios") {
+    qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
+    qrSubtitle.textContent = "Scan the QR code below for iOS:";
+    qrImage.src = "assets/App store QR.svg"; // Set the iOS QR code image
+    qrSection.style.display = "block"; // Show the section
+  } else if (osName === "android") {
+    qrTitle.textContent =
+      "Want to protect your Android device with TrackCyber?";
+    qrSubtitle.textContent = "Scan the QR code below for Android:";
+    qrImage.src = "assets/Play store QR.svg"; // Set the Android QR code image
+    qrSection.style.display = "block"; // Show the section
+  } else {
+    qrSection.style.display = "none"; // Hide the section for other platforms
+  }
+
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
   document.querySelector("#version").textContent = versionText || "N/A";

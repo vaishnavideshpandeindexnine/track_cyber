@@ -73,6 +73,34 @@
   border: none;
 }
 
+/* QR Section Base Styling */
+#qr-section {
+  display: none;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+#qr-title {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #171e3a;
+  margin-bottom: 1rem;
+}
+
+#qr-subtitle {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: #171e3a;
+  margin-bottom: 1.5rem;
+}
+
+#qr-image {
+  max-width: 200px;
+  height: auto;
+}
+
 /* Responsive Design */
 
 /* Large Screens (Desktops) */
@@ -109,6 +137,17 @@
 
   .downloadButton .downloadButtonMac {
     height: 3.125rem;
+  }
+  #qr-title {
+    font-size: 1.25rem;
+  }
+
+  #qr-subtitle {
+    font-size: 1rem;
+  }
+
+  #qr-image {
+    max-width: 150px;
   }
 }
 
@@ -154,5 +193,16 @@
   .img-fluid {
     width: 100%;
     height: auto;
+  }
+  #qr-title {
+    font-size: 1rem;
+  }
+
+  #qr-subtitle {
+    font-size: 0.875rem;
+  }
+
+  #qr-image {
+    max-width: 120px;
   }
 }
