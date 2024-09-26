@@ -140,16 +140,16 @@ function updateUI(
   if (osName === "ios") {
     qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
     qrSubtitle.textContent = "Scan the QR code below for iOS:";
-    qrImage.src = "assets/App store QR.svg"; // Set the iOS QR code image
-    qrSection.style.display = "block"; // Show the section
+    qrImage.src = "assets/App store QR.svg";
+    qrSection.style.display = "block";
   } else if (osName === "android") {
     qrTitle.textContent =
       "Want to protect your Android device with TrackCyber?";
     qrSubtitle.textContent = "Scan the QR code below for Android:";
-    qrImage.src = "assets/Play store QR.svg"; // Set the Android QR code image
-    qrSection.style.display = "block"; // Show the section
+    qrImage.src = "assets/Play store QR.svg";
+    qrSection.style.display = "block";
   } else {
-    qrSection.style.display = "none"; // Hide the section for other platforms
+    qrSection.style.display = "none";
   }
 
   document.querySelector("#platform").textContent = platformText || "N/A";
