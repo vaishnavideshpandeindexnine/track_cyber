@@ -140,7 +140,7 @@ function updateUI(
   if (osName === "ios") {
     qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
     qrSubtitle.textContent = "Scan the QR code below for iOS:";
-    qrImage.src = "assets/App store QR.svg";
+    qrImage.src = "assets/TestFlight QR.svg";
     qrSection.style.display = "block";
   } else if (osName === "android") {
     qrTitle.textContent =
