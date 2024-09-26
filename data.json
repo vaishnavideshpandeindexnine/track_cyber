@@ -18,12 +18,12 @@
   },
   "iOS": {
     "package": "TrackCyber.ipa",
-    "link": "https://www.track_cyber.com/ios.ipa/",
+    "link": "https://www.apple.com/in/app-store/",
     "version": "v1.9.0"
   },
   "Android": {
     "package": "TrackCyber.apk",
-    "link": "https://www.track_cyber.com/android.apk/",
+    "link": "https://play.google.com/store/apps",
     "version": "v9.0.0"
   }
 }
