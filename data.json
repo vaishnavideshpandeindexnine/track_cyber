@@ -1,18 +1,18 @@
 {
   "Windows": {
     "package": "TrackCyber.exe",
-    "link": "https://www.track_cyber.com/windows.exe/",
+    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe",
     "version": "v1.1.0"
   },
   "macOS": {
     "Intel": {
       "package": "TrackCyber.dmg",
-      "link": "https://www.track_cyber.com/mac_intel.dmg/",
+      "link": "https://secure.trackcyber.regverse.com/downloads/mac-x64-installer.dmg",
       "version": "v2.0.6"
     },
     "AppleSilicon": {
       "package": "TrackCyber.dmg",
-      "link": "https://www.track_cyber.com/mac_apple.dmg/",
+      "link": "https://secure.trackcyber.regverse.com/downloads/mac-arm64-installer.dmg",
       "version": "v5.0.0"
     }
   },
