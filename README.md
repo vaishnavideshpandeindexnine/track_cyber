@@ -8,6 +8,7 @@ This project provides a dynamic download page for **TrackCyber**, a compliance t
 - Displays specific download links and package details based on the detected platform.
 - Provides separate download buttons for macOS (Intel) and macOS (Apple Silicon).
 - User-friendly interface with a responsive design for mobile, tablet, and desktop devices.
+- Displays a QR code for mobile devices (iOS/Android) to ease the installation process.
 
 ## Technologies Used
 
@@ -26,16 +27,21 @@ When the page loads, the script:
 - Uses `UAParser.js` to detect the user's OS and CPU architecture.
 - If the user's OS is macOS and their CPU architecture is unknown, the page displays buttons for both Intel and Apple Silicon versions, allowing the user to manually select the correct version.
 - For other platforms (Windows, iOS, Android), the page automatically provides the correct download link.
+- For iOS and Android, the page displays a QR code for easy access to the app download via mobile.
 
 ### Update UI Based on Detection
 
-The page updates the UI elements (`#platform`, `#package`, `#version`) with the detected platform, available package type, and version number. It also adds click functionality to the appropriate download buttons.
+The page updates the UI elements (#platform, #package, #version) with the detected platform, available package type, and version number. It also adds click functionality to the appropriate download buttons and dynamically shows QR codes for iOS and Android users.
 
 ## How to Run
 
 1. Clone or download the project files.
 2. Ensure that `data.json` is available in the root directory, containing platform-specific download information (see format below).
 3. Open `index.html` in any browser to view the page.
+
+## QR Code Functionality
+
+For mobile platforms (iOS and Android), the page dynamically displays a QR code to ease the installation process. Users can scan the code to be redirected to the appropriate app store for their device.
 
 ## `data.json` Structure
 
@@ -45,29 +51,29 @@ The `data.json` file stores the download URLs, version information, and package 
 {
   "Windows": {
     "package": "TrackCyber.exe",
-    "link": "https://www.track_cyber.com/windows.exe/",
+    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe",
     "version": "v1.1.0"
   },
   "macOS": {
     "Intel": {
       "package": "TrackCyber.dmg",
-      "link": "https://www.track_cyber.com/mac_intel.dmg/",
+      "link": "https://secure.trackcyber.regverse.com/downloads/mac-x64-installer.dmg",
       "version": "v2.0.6"
     },
     "AppleSilicon": {
       "package": "TrackCyber.dmg",
-      "link": "https://www.track_cyber.com/mac_apple.dmg/",
+      "link": "https://secure.trackcyber.regverse.com/downloads/mac-arm64-installer.dmg",
       "version": "v5.0.0"
     }
   },
   "iOS": {
     "package": "TrackCyber.ipa",
-    "link": "https://www.track_cyber.com/ios.ipa/",
+    "link": "https://apps.apple.com/us/app/testflight/id899247664",
     "version": "v1.9.0"
   },
   "Android": {
     "package": "TrackCyber.apk",
-    "link": "https://www.track_cyber.com/android.apk/",
+    "link": "https://play.google.com/store/apps",
     "version": "v9.0.0"
   }
 }
@@ -84,7 +90,7 @@ To update the download links, package names, or versions:
 {
   "Windows": {
     "package": "TrackCyber_v2.exe",
-    "link": "https://www.track_cyber.com/windows_v2.exe/",
+    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe",
     "version": "v2.0.0"
   }
 }
