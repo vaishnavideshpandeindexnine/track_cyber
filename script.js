@@ -140,18 +140,15 @@ function updateUI(
     macDownloadButtons.style.display = "block";
     defaultDownloadButton.style.display = "none";
     platformText = "mac OS";
-    packageText = data.macOS.AppleSilicon.package;
 
-    macDownloadButtons?.addEventListener("click", function (event) {
-      if (event.target.classList.contains("downloadIntelButton")) {
-        console.log("Intel Button clicked");
-        window.location.href = data.macOS.Intel.link;
-      } else if (
-        event.target.classList.contains("downloadAppleSiliconButton")
-      ) {
-        console.log("Apple Silicon Button clicked");
-        window.location.href = data.macOS.AppleSilicon.link;
-      }
+    intelButton?.addEventListener("click", function () {
+      console.log("clicked Intel");
+
+      window.location.href = data.macOS.Intel.link;
+    });
+
+    appleSiliconButton?.addEventListener("click", function () {
+      window.location.href = data.macOS.AppleSilicon.link;
     });
   } else {
     macDownloadButtons.style.display = "none";
