@@ -27,21 +27,24 @@ async function detectPlatform() {
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
 
-  // Check for Apple Silicon by checking 'Macintosh' in user agent
-  if (navigator?.userAgentData) {
+  // Use userAgentData if available for more reliable platform detection
+  if (navigator.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
       "platform",
     ]);
     osName = details?.platform || osName;
     cpuName = details?.architecture || cpuName;
-  } else if (navigator.userAgent.toLowerCase().includes("macintosh")) {
-    osName = "macOS";
-    // Check if running Apple Silicon (using native code hint)
-    if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 0) {
-      cpuName = "arm64"; // Apple Silicon
-    } else {
-      cpuName = "amd64"; // Intel
+  } else {
+    // Fallback for browsers that do not support userAgentData (e.g., Safari)
+    osName = osName.toLowerCase();
+
+    if (osName === "macos") {
+      if (navigator.userAgent.toLowerCase().includes("arm")) {
+        cpuName = "arm64"; // Apple Silicon
+      } else {
+        cpuName = "amd64"; // Intel
+      }
     }
   }
 
@@ -134,8 +137,8 @@ function updateUI(
     qrSection.style.display = "none";
   }
 
-  document.querySelector("#platform")?.textContent = platformText || "N/A";
-  document.querySelector("#package")?.textContent = packageText || "N/A";
+  document.querySelector("#platform").textContent = platformText || "N/A";
+  document.querySelector("#package").textContent = packageText || "N/A";
 
   if (osName === "macos" && (cpuName === "unknown" || cpuName === "N/A")) {
     macDownloadButtons.style.display = "block";
