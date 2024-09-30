@@ -33,12 +33,14 @@ async function detectPlatform() {
     ]);
     osName = details?.platform || "unknown";
     cpuName = details?.architecture || "unknown";
+    console.log(osName);
   } else {
     const uap = new UAParser(navigator.userAgent);
     osName = uap.getOS().name || "unknown";
     cpuName = uap.getCPU().architecture || "unknown";
     if (navigator.userAgent.toLowerCase().includes("macintosh")) {
       osName = "macOS";
+      console.log(osName);
       if (/arm|applewebkit.+mobile/i.test(navigator.userAgent)) {
         cpuName = "arm64";
       } else {
