@@ -31,7 +31,7 @@ When the page loads, the script:
 
 ### Update UI Based on Detection
 
-The page updates the UI elements (#platform, #package, #version) with the detected platform, available package type, and version number. It also adds click functionality to the appropriate download buttons and dynamically shows QR codes for iOS and Android users.
+The page updates the UI elements (#platform, #package, #version) with the detected platform and available package type. It also adds click functionality to the appropriate download buttons and dynamically shows QR codes for iOS and Android users.
 
 ## How to Run
 
@@ -45,43 +45,38 @@ For mobile platforms (iOS and Android), the page dynamically displays a QR code 
 
 ## `data.json` Structure
 
-The `data.json` file stores the download URLs, version information, and package names for different platforms. Here's the structure:
+The `data.json` file stores the download URLs and package names for different platforms. Here's the structure:
 
 ```json
 {
   "Windows": {
     "package": "TrackCyber.exe",
-    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe",
-    "version": "v1.1.0"
+    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe"
   },
   "macOS": {
     "Intel": {
       "package": "TrackCyber.dmg",
-      "link": "https://secure.trackcyber.regverse.com/downloads/mac-x64-installer.dmg",
-      "version": "v2.0.6"
+      "link": "https://secure.trackcyber.regverse.com/downloads/mac-x64-installer.dmg"
     },
     "AppleSilicon": {
       "package": "TrackCyber.dmg",
-      "link": "https://secure.trackcyber.regverse.com/downloads/mac-arm64-installer.dmg",
-      "version": "v5.0.0"
+      "link": "https://secure.trackcyber.regverse.com/downloads/mac-arm64-installer.dmg"
     }
   },
   "iOS": {
     "package": "TrackCyber.ipa",
-    "link": "https://apps.apple.com/us/app/testflight/id899247664",
-    "version": "v1.9.0"
+    "link": "https://apps.apple.com/us/app/testflight/id899247664"
   },
   "Android": {
     "package": "TrackCyber.apk",
-    "link": "https://play.google.com/store/apps",
-    "version": "v9.0.0"
+    "link": "https://play.google.com/store/apps"
   }
 }
 ```
 
 ## Updating the JSON
 
-To update the download links, package names, or versions:
+To update the download links or package names:
 
 1. Open the `data.json` file.
 2. Modify the values for the respective platforms. For example, to update the Windows download link:
@@ -90,8 +85,7 @@ To update the download links, package names, or versions:
 {
   "Windows": {
     "package": "TrackCyber_v2.exe",
-    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe",
-    "version": "v2.0.0"
+    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe"
   }
 }
 ```

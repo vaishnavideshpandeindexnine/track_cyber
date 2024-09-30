@@ -1,29 +1,24 @@
 {
   "Windows": {
     "package": "TrackCyber.exe",
-    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe",
-    "version": "v1.1.0"
+    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe"
   },
   "macOS": {
     "Intel": {
       "package": "TrackCyber.dmg",
-      "link": "https://secure.trackcyber.regverse.com/downloads/mac-x64-installer.dmg",
-      "version": "v2.0.6"
+      "link": "https://secure.trackcyber.regverse.com/downloads/mac-x64-installer.dmg"
     },
     "AppleSilicon": {
       "package": "TrackCyber.dmg",
-      "link": "https://secure.trackcyber.regverse.com/downloads/mac-arm64-installer.dmg",
-      "version": "v5.0.0"
+      "link": "https://secure.trackcyber.regverse.com/downloads/mac-arm64-installer.dmg"
     }
   },
   "iOS": {
     "package": "TrackCyber.ipa",
-    "link": "https://apps.apple.com/us/app/testflight/id899247664",
-    "version": "v1.9.0"
+    "link": "https://apps.apple.com/us/app/testflight/id899247664"
   },
   "Android": {
     "package": "TrackCyber.apk",
-    "link": "https://play.google.com/store/apps",
-    "version": "v9.0.0"
+    "link": "https://play.google.com/store/apps"
   }
 }
