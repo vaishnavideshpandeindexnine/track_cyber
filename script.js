@@ -1,14 +1,12 @@
 window.onload = async function () {
   try {
     const data = await fetchData("data.json");
-    const { osName, cpuName, browserName } = await detectPlatform();
+    const { osName, cpuName } = await detectPlatform();
     const { platformText, packageText, downloadUrl } = getPlatformDetails(
       osName,
       cpuName,
-      browserName,
       data
     );
-
     updateUI(platformText, packageText, downloadUrl, osName, cpuName, data);
   } catch (error) {
     alert("Error fetching data or processing user-agent: " + error.message);
@@ -27,11 +25,10 @@ async function detectPlatform() {
   const uap = new UAParser(navigator.userAgent);
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
-  let browserName = uap.getBrowser().name || "unknown";
 
   console.log("Detected OS:", osName);
   console.log("Detected CPU:", cpuName);
-  console.log("Detected Browser:", browserName);
+
   if (cpuName === "unknown" && navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
@@ -44,7 +41,6 @@ async function detectPlatform() {
   return {
     osName: osName.toLowerCase(),
     cpuName: cpuName.toLowerCase(),
-    browserName: browserName.toLowerCase(),
   };
 }
 
@@ -105,7 +101,6 @@ function updateUI(
   downloadUrl,
   osName,
   cpuName,
-  browserName,
   data
 ) {
   const macDownloadButtons = document.getElementById("mac-download-buttons");
@@ -137,10 +132,10 @@ function updateUI(
 
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
-
+  const uap = new UAParser(navigator.userAgent);
   if (
     (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) ||
-    browserName === "Safari"
+    uap?.getBrowser().name === "Safari"
   ) {
     macDownloadButtons.style.display = "block";
     defaultDownloadButton.style.display = "none";
