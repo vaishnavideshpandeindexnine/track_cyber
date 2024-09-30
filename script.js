@@ -23,7 +23,7 @@ async function fetchData(url) {
 }
 
 async function detectPlatform() {
-  const uap = new UAParser(navigator.userAgent);
+  const uap = new UAParser(navigator?.userAgent);
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
 
@@ -110,7 +110,6 @@ function updateUI(
   const qrSubtitle = document.getElementById("qr-subtitle");
   const qrImage = document.getElementById("qr-image");
 
-  // Show QR section for iOS and Android
   if (osName === "ios") {
     qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
     qrSubtitle.textContent = "Scan the QR code below for iOS:";
@@ -129,33 +128,31 @@ function updateUI(
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
 
-  // Display both buttons for macOS when using Safari
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator?.userAgent); // Check if the browser is Safari
 
   if (osName === "macos") {
     macDownloadButtons.style.display = "block";
 
-    // Show both Intel and Apple Silicon buttons for Safari on macOS
     if (isSafari) {
-      intelButton.style.display = "block"; // Show Intel button
-      appleSiliconButton.style.display = "block"; // Show Apple Silicon button
-      platformText = "mac OS";
+      // If macOS and Safari, show both buttons
+      intelButton.style.display = "block";
+      appleSiliconButton.style.display = "block";
+
+      // Set up download button actions
+      intelButton.addEventListener("click", function () {
+        window.location.href = data.macOS.Intel.link;
+      });
+
+      appleSiliconButton.addEventListener("click", function () {
+        window.location.href = data.macOS.AppleSilicon.link;
+      });
     } else {
+      // If not Safari, you might want to show only one button or handle differently
       intelButton.style.display = "none"; // Hide Intel button for non-Safari browsers
       appleSiliconButton.style.display = "none"; // Hide Apple Silicon button for non-Safari browsers
     }
-
-    // Set up download button actions
-    intelButton.addEventListener("click", function () {
-      window.location.href = data.macOS.Intel.link;
-    });
-
-    appleSiliconButton.addEventListener("click", function () {
-      window.location.href = data.macOS.AppleSilicon.link;
-    });
   } else {
     macDownloadButtons.style.display = "none";
-    defaultDownloadButton.style.display = "block"; // Show default button if not macOS
 
     defaultDownloadButton.addEventListener("click", function () {
       if (downloadUrl !== "#") {
