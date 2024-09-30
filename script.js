@@ -131,10 +131,6 @@ function updateUI(
     qrSection.style.display = "none";
   }
 
-  // Update platform and package texts
-  document.querySelector("#platform").textContent = platformText || "N/A";
-  document.querySelector("#package").textContent = packageText || "N/A";
-
   // Handle macOS download buttons
   const uap = new UAParser(navigator.userAgent);
   const isSafari = uap.getBrowser().name === "Safari";
@@ -170,4 +166,7 @@ function updateUI(
       }
     });
   }
+  // Update platform and package texts
+  document.querySelector("#platform").textContent = platformText || "N/A";
+  document.querySelector("#package").textContent = packageText || "N/A";
 }
