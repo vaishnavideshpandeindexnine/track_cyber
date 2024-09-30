@@ -27,24 +27,21 @@ async function detectPlatform() {
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
 
-  // Use userAgentData if available for more reliable platform detection
-  if (navigator.userAgentData) {
+  // Check for Apple Silicon by checking 'Macintosh' in user agent
+  if (navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
       "platform",
     ]);
     osName = details?.platform || osName;
     cpuName = details?.architecture || cpuName;
-  } else {
-    // Fallback for browsers that do not support userAgentData (e.g., Safari)
-    osName = osName.toLowerCase();
-
-    if (osName === "macos") {
-      if (navigator.userAgent.toLowerCase().includes("arm")) {
-        cpuName = "arm64"; // Apple Silicon
-      } else {
-        cpuName = "amd64"; // Intel
-      }
+  } else if (navigator.userAgent.toLowerCase().includes("macintosh")) {
+    osName = "macOS";
+    // Check if running Apple Silicon (using native code hint)
+    if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 0) {
+      cpuName = "arm64"; // Apple Silicon
+    } else {
+      cpuName = "amd64"; // Intel
     }
   }
 
@@ -62,7 +59,7 @@ function getPlatformDetails(osName, cpuName, data) {
   switch (osName) {
     case "windows":
       ({ link: downloadUrl, package: packageText } = data.Windows);
-      platformText = osName;
+      platformText = "Windows";
       break;
     case "macos":
       if (cpuName === "amd64") {
@@ -75,11 +72,11 @@ function getPlatformDetails(osName, cpuName, data) {
       break;
     case "ios":
       ({ link: downloadUrl, package: packageText } = data.iOS);
-      platformText = osName;
+      platformText = "iOS";
       break;
     case "android":
       ({ link: downloadUrl, package: packageText } = data.Android);
-      platformText = osName;
+      platformText = "Android";
       break;
     default:
       platformText = "N/A";
@@ -89,10 +86,10 @@ function getPlatformDetails(osName, cpuName, data) {
 }
 
 function normalizeOSName(osName) {
-  if (osName.includes("mac") || osName.includes("macintosh")) return "macOS";
-  if (osName.includes("windows")) return "Windows";
-  if (osName.includes("ios")) return "iOS";
-  if (osName.includes("android")) return "Android";
+  if (osName.includes("mac") || osName.includes("macintosh")) return "macos";
+  if (osName.includes("windows")) return "windows";
+  if (osName.includes("ios")) return "ios";
+  if (osName.includes("android")) return "android";
   return "N/A";
 }
 
