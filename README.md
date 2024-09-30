@@ -51,16 +51,16 @@ The `data.json` file stores the download URLs and package names for different pl
 {
   "Windows": {
     "package": "TrackCyber.exe",
-    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe"
+    "link": "https://trackcyber.regverse.com/downloads/TrackCyber-Windows-Installer.exe"
   },
   "macOS": {
     "Intel": {
       "package": "TrackCyber.dmg",
-      "link": "https://secure.trackcyber.regverse.com/downloads/mac-x64-installer.dmg"
+      "link": "https://trackcyber.regverse.com/downloads/Apple-Intel-Installer.pkg"
     },
     "AppleSilicon": {
       "package": "TrackCyber.dmg",
-      "link": "https://secure.trackcyber.regverse.com/downloads/mac-arm64-installer.dmg"
+      "link": "https://trackcyber.regverse.com/downloads/Apple-Silicon-Installer.pkg"
     }
   },
   "iOS": {
@@ -85,7 +85,7 @@ To update the download links or package names:
 {
   "Windows": {
     "package": "TrackCyber_v2.exe",
-    "link": "https://secure.trackcyber.regverse.com/downloads/windows-installer.exe"
+    "link": "https://trackcyber.regverse.com/downloads/TrackCyber-Windows-Installer.exe"
   }
 }
 ```
