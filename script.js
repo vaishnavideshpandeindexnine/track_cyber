@@ -1,122 +1,3 @@
-window.onload = async function () {
-  try {
-    const data = await fetchData("data.json");
-    const { osName, cpuName } = await detectPlatform();
-    const { platformText, packageText, downloadUrl } = getPlatformDetails(
-      osName,
-      cpuName,
-      data
-    );
-
-    updateUI(platformText, packageText, downloadUrl, osName, cpuName, data);
-  } catch (error) {
-    alert("Error fetching data or processing user-agent: " + error.message);
-  }
-};
-
-async function fetchData(url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  return response.json();
-}
-
-async function detectPlatform() {
-  let osName = "unknown";
-  let cpuName = "unknown";
-
-  // Use User-Agent Data API if available
-  if (navigator?.userAgentData) {
-    const details = await navigator.userAgentData.getHighEntropyValues([
-      "architecture",
-      "platform",
-    ]);
-    osName = details?.platform || "unknown";
-    cpuName = details?.architecture || "unknown";
-    console.log("High Entropy Data:", osName, cpuName);
-  } else {
-    // Fallback using UAParser
-    const uap = new UAParser(navigator.userAgent);
-    osName = uap.getOS().name || "unknown";
-    cpuName = uap.getCPU().architecture || "unknown";
-    console.log("Fallback (UAParser):", osName, cpuName);
-
-    // Check for macOS
-    if (osName.toLowerCase().includes("mac")) {
-      osName = "macOS"; // Explicitly set macOS
-      console.log("Detected macOS");
-
-      // Check if it's running on Apple Silicon
-      const userAgent = navigator.userAgent.toLowerCase();
-
-      // Check for known Apple Silicon identifiers
-      if (userAgent.includes("apple") && userAgent.includes("macintosh")) {
-        if (navigator.maxTouchPoints > 0 || userAgent.includes("arm")) {
-          cpuName = "arm64"; // Apple Silicon
-          console.log("Detected Apple Silicon (arm64)");
-        } else {
-          cpuName = "amd64"; // Intel
-          console.log("Detected Intel (amd64)");
-        }
-      }
-    }
-  }
-
-  return { osName: osName.toLowerCase(), cpuName: cpuName.toLowerCase() };
-}
-
-function getPlatformDetails(osName, cpuName, data) {
-  let platformText = "Unknown";
-  let packageText = "N/A";
-  let downloadUrl = "#";
-
-  osName = normalizeOSName(osName);
-  cpuName = normalizeCPUName(cpuName);
-
-  switch (osName) {
-    case "windows":
-      ({ link: downloadUrl, package: packageText } = data.Windows);
-      platformText = "Windows";
-      break;
-    case "macos":
-      if (cpuName === "amd64") {
-        ({ link: downloadUrl, package: packageText } = data.macOS.Intel);
-        platformText = "macOS (Intel)";
-      } else if (cpuName === "arm64") {
-        ({ link: downloadUrl, package: packageText } = data.macOS.AppleSilicon);
-        platformText = "macOS (Apple Silicon)";
-      }
-      break;
-    case "ios":
-      ({ link: downloadUrl, package: packageText } = data.iOS);
-      platformText = "iOS";
-      break;
-    case "android":
-      ({ link: downloadUrl, package: packageText } = data.Android);
-      platformText = "Android";
-      break;
-    default:
-      platformText = "N/A";
-  }
-
-  return { platformText, packageText, downloadUrl };
-}
-
-function normalizeOSName(osName) {
-  if (osName.includes("mac") || osName.includes("macintosh")) return "macos";
-  if (osName.includes("windows")) return "windows";
-  if (osName.includes("ios")) return "ios";
-  if (osName.includes("android")) return "android";
-  return "N/A";
-}
-
-function normalizeCPUName(cpuName) {
-  if (cpuName.includes("arm")) return "arm64";
-  if (cpuName.includes("x86") || cpuName.includes("amd64")) return "amd64";
-  return "N/A";
-}
-
 function updateUI(
   platformText,
   packageText,
@@ -137,6 +18,7 @@ function updateUI(
   const qrSubtitle = document.getElementById("qr-subtitle");
   const qrImage = document.getElementById("qr-image");
 
+  // Show QR section for iOS and Android
   if (osName === "ios") {
     qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
     qrSubtitle.textContent = "Scan the QR code below for iOS:";
@@ -155,19 +37,24 @@ function updateUI(
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
 
-  if (osName === "macos" && (cpuName === "unknown" || cpuName === "N/A")) {
-    macDownloadButtons.style.display = "block";
-    defaultDownloadButton.style.display = "none";
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-    intelButton?.addEventListener("click", function () {
+  // Display both buttons for macOS when using Safari
+  if (osName === "macos") {
+    macDownloadButtons.style.display = "block";
+    intelButton.style.display = "block"; // Show Intel button
+    appleSiliconButton.style.display = "block"; // Show Apple Silicon button
+
+    intelButton.addEventListener("click", function () {
       window.location.href = data.macOS.Intel.link;
     });
 
-    appleSiliconButton?.addEventListener("click", function () {
+    appleSiliconButton.addEventListener("click", function () {
       window.location.href = data.macOS.AppleSilicon.link;
     });
   } else {
     macDownloadButtons.style.display = "none";
+    defaultDownloadButton.style.display = "block"; // Show default button if not macOS
 
     defaultDownloadButton.addEventListener("click", function () {
       if (downloadUrl !== "#") {
