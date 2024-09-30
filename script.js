@@ -57,7 +57,7 @@ function getPlatformDetails(osName, cpuName, data) {
       break;
     case "macOS":
       if (cpuName === "unknown" || cpuName === "N/A") {
-        cpuName = "amd64"; // Assume Intel by default if unknown
+        cpuName = "amd64";
       }
       if (cpuName === "amd64") {
         ({ link: downloadUrl, package: packageText } = data.macOS.Intel);
