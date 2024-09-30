@@ -132,11 +132,20 @@ function updateUI(
   // Display both buttons for macOS when using Safari
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-  if (osName === "macos" || (osName === "macos" && isSafari)) {
+  if (osName === "macos") {
     macDownloadButtons.style.display = "block";
-    intelButton.style.display = "block"; // Show Intel button
-    appleSiliconButton.style.display = "block"; // Show Apple Silicon button
 
+    // Show both Intel and Apple Silicon buttons for Safari on macOS
+    if (isSafari) {
+      intelButton.style.display = "block"; // Show Intel button
+      appleSiliconButton.style.display = "block"; // Show Apple Silicon button
+      platformText = "mac OS";
+    } else {
+      intelButton.style.display = "none"; // Hide Intel button for non-Safari browsers
+      appleSiliconButton.style.display = "none"; // Hide Apple Silicon button for non-Safari browsers
+    }
+
+    // Set up download button actions
     intelButton.addEventListener("click", function () {
       window.location.href = data.macOS.Intel.link;
     });
