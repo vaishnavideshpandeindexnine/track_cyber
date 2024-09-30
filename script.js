@@ -26,9 +26,6 @@ async function detectPlatform() {
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
 
-  console.log("Detected OS:", osName);
-  console.log("Detected CPU:", cpuName);
-
   if (cpuName === "unknown" && navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
@@ -53,26 +50,24 @@ function getPlatformDetails(osName, cpuName, data) {
   cpuName = normalizeCPUName(cpuName);
 
   switch (osName) {
-    case "Windows":
+    case "windows":
       ({ link: downloadUrl, package: packageText } = data.Windows);
-      platformText = osName;
+      platformText = osName.charAt(0).toUpperCase() + osName.slice(1);
       break;
-    case "macOS":
-      if (cpuName === "amd64") {
-        ({ link: downloadUrl, package: packageText } = data.macOS.Intel);
-        platformText = "macOS (Intel)";
-      } else if (cpuName === "arm64") {
-        ({ link: downloadUrl, package: packageText } = data.macOS.AppleSilicon);
-        platformText = "macOS (Apple Silicon)";
-      }
+    case "macos":
+      ({ link: downloadUrl, package: packageText } =
+        cpuName === "amd64" ? data.macOS.Intel : data.macOS.AppleSilicon);
+      platformText = `macOS (${
+        cpuName === "amd64" ? "Intel" : "Apple Silicon"
+      })`;
       break;
-    case "iOS":
+    case "ios":
       ({ link: downloadUrl, package: packageText } = data.iOS);
-      platformText = osName;
+      platformText = osName.charAt(0).toUpperCase() + osName.slice(1);
       break;
-    case "Android":
+    case "android":
       ({ link: downloadUrl, package: packageText } = data.Android);
-      platformText = osName;
+      platformText = osName.charAt(0).toUpperCase() + osName.slice(1);
       break;
     default:
       platformText = "N/A";
@@ -109,12 +104,38 @@ function updateUI(
     ".downloadAppleSiliconButton"
   );
   const defaultDownloadButton = document.querySelector(".downloadButton");
-
   const qrSection = document.getElementById("qr-section");
   const qrTitle = document.getElementById("qr-title");
   const qrSubtitle = document.getElementById("qr-subtitle");
   const qrImage = document.getElementById("qr-image");
 
+  // Set QR section based on OS
+  setQRSection(osName, qrTitle, qrSubtitle, qrImage, qrSection);
+
+  // Update platform and package text
+  document.querySelector("#platform").textContent = platformText || "N/A";
+  document.querySelector("#package").textContent = packageText || "N/A";
+
+  const browserName = new UAParser(navigator.userAgent).getBrowser().name;
+
+  if (isMacOSWithUnknownCPU(osName, cpuName, browserName)) {
+    showMacDownloadButtons(
+      macDownloadButtons,
+      defaultDownloadButton,
+      intelButton,
+      appleSiliconButton,
+      data
+    );
+  } else {
+    hideMacDownloadButtons(
+      macDownloadButtons,
+      defaultDownloadButton,
+      downloadUrl
+    );
+  }
+}
+
+function setQRSection(osName, qrTitle, qrSubtitle, qrImage, qrSection) {
   if (osName === "ios") {
     qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
     qrSubtitle.textContent = "Scan the QR code below for iOS:";
@@ -129,36 +150,47 @@ function updateUI(
   } else {
     qrSection.style.display = "none";
   }
+}
 
-  document.querySelector("#platform").textContent = platformText || "N/A";
-  document.querySelector("#package").textContent = packageText || "N/A";
-  const uap = new UAParser(navigator.userAgent);
-  if (
-    (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) ||
-    uap?.getBrowser().name === "Safari"
-  ) {
-    macDownloadButtons.style.display = "block";
-    defaultDownloadButton.style.display = "none";
+function isMacOSWithUnknownCPU(osName, cpuName, browserName) {
+  return (
+    (osName === "macos" && (cpuName === "unknown" || cpuName === "N/A")) ||
+    browserName === "Safari"
+  );
+}
 
-    intelButton?.addEventListener("click", function () {
-      window.location.href = data.macOS.Intel.link;
-    });
+function showMacDownloadButtons(
+  macDownloadButtons,
+  defaultDownloadButton,
+  intelButton,
+  appleSiliconButton,
+  data
+) {
+  macDownloadButtons.style.display = "block";
+  defaultDownloadButton.style.display = "none";
 
-    appleSiliconButton?.addEventListener("click", function () {
-      window.location.href = data.macOS.AppleSilicon.link;
-    });
-  } else if (uap?.getBrowser().name === "Safari") {
-    platformText = "mac OS";
-    packageText = data.macOS.AppleSilicon.package;
-  } else {
-    macDownloadButtons.style.display = "none";
+  intelButton?.addEventListener("click", function () {
+    window.location.href = data.macOS.Intel.link;
+  });
 
-    defaultDownloadButton.addEventListener("click", function () {
-      if (downloadUrl !== "#") {
-        window.location.href = downloadUrl;
-      } else {
-        alert("Download URL not available.");
-      }
-    });
-  }
+  appleSiliconButton?.addEventListener("click", function () {
+    window.location.href = data.macOS.AppleSilicon.link;
+  });
+}
+
+function hideMacDownloadButtons(
+  macDownloadButtons,
+  defaultDownloadButton,
+  downloadUrl
+) {
+  macDownloadButtons.style.display = "none";
+  defaultDownloadButton.style.display = "block";
+
+  defaultDownloadButton.addEventListener("click", function () {
+    if (downloadUrl !== "#") {
+      window.location.href = downloadUrl;
+    } else {
+      alert("Download URL not available.");
+    }
+  });
 }
