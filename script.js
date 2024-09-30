@@ -115,6 +115,7 @@ function updateUI(
   const qrSubtitle = document.getElementById("qr-subtitle");
   const qrImage = document.getElementById("qr-image");
 
+  // Set QR code section for iOS and Android
   if (osName === "ios") {
     qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
     qrSubtitle.textContent = "Scan the QR code below for iOS:";
@@ -130,16 +131,23 @@ function updateUI(
     qrSection.style.display = "none";
   }
 
+  // Update platform and package texts
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
+
+  // Handle macOS download buttons
   const uap = new UAParser(navigator.userAgent);
+  const isSafari = uap.getBrowser().name === "Safari";
+
   if (
-    (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) ||
-    uap?.getBrowser().name === "Safari"
+    osName.includes("mac") &&
+    (cpuName === "unknown" || cpuName === "N/A" || isSafari)
   ) {
     macDownloadButtons.style.display = "block";
     defaultDownloadButton.style.display = "none";
+    platformText = "mac OS";
 
+    // Add event listeners for Intel and Apple Silicon buttons
     intelButton?.addEventListener("click", function () {
       window.location.href = data.macOS.Intel.link;
     });
@@ -147,12 +155,11 @@ function updateUI(
     appleSiliconButton?.addEventListener("click", function () {
       window.location.href = data.macOS.AppleSilicon.link;
     });
-  } else if (uap?.getBrowser().name === "Safari") {
-    platformText = "mac OS";
-    packageText = data.macOS.AppleSilicon.package;
   } else {
     macDownloadButtons.style.display = "none";
+    defaultDownloadButton.style.display = "block";
 
+    // Add event listener for the default download button
     defaultDownloadButton.addEventListener("click", function () {
       if (downloadUrl !== "#") {
         window.location.href = downloadUrl;
