@@ -132,7 +132,10 @@ function updateUI(
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
 
-  if (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) {
+  if (
+    (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) ||
+    browserName === "Safari"
+  ) {
     macDownloadButtons.style.display = "block";
     defaultDownloadButton.style.display = "none";
 
