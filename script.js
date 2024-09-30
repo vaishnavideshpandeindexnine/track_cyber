@@ -33,12 +33,12 @@ async function detectPlatform() {
     ]);
     osName = details?.platform || "unknown";
     cpuName = details?.architecture || "unknown";
-    console.log(osName);
+    console.log("Normal", osName);
   } else {
     const uap = new UAParser(navigator.userAgent);
     osName = uap.getOS().name || "unknown";
     cpuName = uap.getCPU().architecture || "unknown";
-    console.log(osName);
+    console.log("UA", osName);
     if (navigator.userAgent.toLowerCase().includes("macintosh")) {
       osName = "macOS";
       console.log(osName);
