@@ -147,6 +147,9 @@ function updateUI(
     appleSiliconButton?.addEventListener("click", function () {
       window.location.href = data.macOS.AppleSilicon.link;
     });
+  } else if (uap?.getBrowser().name === "Safari") {
+    platformText = "mac OS";
+    packageText = data.macOS.AppleSilicon.package;
   } else {
     macDownloadButtons.style.display = "none";
 
