@@ -140,7 +140,7 @@ function updateUI(
     macDownloadButtons.style.display = "block";
     defaultDownloadButton.style.display = "none";
     platformText = "mac OS";
-    packageText = data.macOS.AppleSilicon.package;
+    packageText = "TrackCyber.dmg";
 
     intelButton?.addEventListener("click", function () {
       console.log("clicked Intel");
