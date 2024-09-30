@@ -27,13 +27,16 @@ async function detectPlatform() {
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
 
-  if (cpuName === "unknown" && navigator?.userAgentData) {
+  if (navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
       "platform",
     ]);
     osName = details?.platform || osName;
     cpuName = details?.architecture || cpuName;
+  } else if (navigator.userAgent.toLowerCase().includes("macintosh")) {
+    osName = "macOS";
+    cpuName = "amd64"; // Defaulting to Intel for macOS
   }
 
   return { osName: osName.toLowerCase(), cpuName: cpuName.toLowerCase() };
@@ -53,6 +56,9 @@ function getPlatformDetails(osName, cpuName, data) {
       platformText = osName;
       break;
     case "macOS":
+      if (cpuName === "unknown" || cpuName === "N/A") {
+        cpuName = "amd64"; // Assume Intel by default if unknown
+      }
       if (cpuName === "amd64") {
         ({ link: downloadUrl, package: packageText } = data.macOS.Intel);
         platformText = "macOS (Intel)";
@@ -77,7 +83,7 @@ function getPlatformDetails(osName, cpuName, data) {
 }
 
 function normalizeOSName(osName) {
-  if (osName.includes("mac")) return "macOS";
+  if (osName.includes("mac") || osName.includes("macintosh")) return "macOS";
   if (osName.includes("windows")) return "Windows";
   if (osName.includes("ios")) return "iOS";
   if (osName.includes("android")) return "Android";
