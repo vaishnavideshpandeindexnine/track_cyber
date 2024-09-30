@@ -38,6 +38,7 @@ async function detectPlatform() {
     const uap = new UAParser(navigator.userAgent);
     osName = uap.getOS().name || "unknown";
     cpuName = uap.getCPU().architecture || "unknown";
+    console.log(osName);
     if (navigator.userAgent.toLowerCase().includes("macintosh")) {
       osName = "macOS";
       console.log(osName);
