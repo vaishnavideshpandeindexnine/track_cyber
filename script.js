@@ -27,6 +27,7 @@ async function detectPlatform() {
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
 
+  // Check for Apple Silicon by checking 'Macintosh' in user agent
   if (navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
@@ -36,7 +37,12 @@ async function detectPlatform() {
     cpuName = details?.architecture || cpuName;
   } else if (navigator.userAgent.toLowerCase().includes("macintosh")) {
     osName = "macOS";
-    cpuName = "amd64";
+    // Check if running Apple Silicon (using native code hint)
+    if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 0) {
+      cpuName = "arm64"; // Apple Silicon
+    } else {
+      cpuName = "amd64"; // Intel
+    }
   }
 
   return { osName: osName.toLowerCase(), cpuName: cpuName.toLowerCase() };
@@ -51,14 +57,11 @@ function getPlatformDetails(osName, cpuName, data) {
   cpuName = normalizeCPUName(cpuName);
 
   switch (osName) {
-    case "Windows":
+    case "windows":
       ({ link: downloadUrl, package: packageText } = data.Windows);
       platformText = osName;
       break;
-    case "macOS":
-      if (cpuName === "unknown" || cpuName === "N/A") {
-        cpuName = "amd64";
-      }
+    case "macos":
       if (cpuName === "amd64") {
         ({ link: downloadUrl, package: packageText } = data.macOS.Intel);
         platformText = "macOS (Intel)";
@@ -67,11 +70,11 @@ function getPlatformDetails(osName, cpuName, data) {
         platformText = "macOS (Apple Silicon)";
       }
       break;
-    case "iOS":
+    case "ios":
       ({ link: downloadUrl, package: packageText } = data.iOS);
       platformText = osName;
       break;
-    case "Android":
+    case "android":
       ({ link: downloadUrl, package: packageText } = data.Android);
       platformText = osName;
       break;
@@ -131,10 +134,10 @@ function updateUI(
     qrSection.style.display = "none";
   }
 
-  document.querySelector("#platform").textContent = platformText || "N/A";
-  document.querySelector("#package").textContent = packageText || "N/A";
+  document.querySelector("#platform")?.textContent = platformText || "N/A";
+  document.querySelector("#package")?.textContent = packageText || "N/A";
 
-  if (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) {
+  if (osName === "macos" && (cpuName === "unknown" || cpuName === "N/A")) {
     macDownloadButtons.style.display = "block";
     defaultDownloadButton.style.display = "none";
 
