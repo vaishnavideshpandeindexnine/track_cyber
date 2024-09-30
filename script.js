@@ -23,25 +23,31 @@ async function fetchData(url) {
 }
 
 async function detectPlatform() {
-  const uap = new UAParser(navigator.userAgent);
-  let osName = uap.getOS().name || "unknown";
-  let cpuName = uap.getCPU().architecture || "unknown";
+  let osName = "unknown";
+  let cpuName = "unknown";
 
-  // Check for Apple Silicon by checking 'Macintosh' in user agent
+  // Use modern `userAgentData` for high-entropy platform detection
   if (navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
       "platform",
     ]);
-    osName = details?.platform || osName;
-    cpuName = details?.architecture || cpuName;
-  } else if (navigator.userAgent.toLowerCase().includes("macintosh")) {
-    osName = "macOS";
-    // Check if running Apple Silicon (using native code hint)
-    if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 0) {
-      cpuName = "arm64"; // Apple Silicon
-    } else {
-      cpuName = "amd64"; // Intel
+    osName = details?.platform || "unknown";
+    cpuName = details?.architecture || "unknown";
+  } else {
+    // Fallback to user agent string detection for older browsers
+    const uap = new UAParser(navigator.userAgent);
+    osName = uap.getOS().name || "unknown";
+    cpuName = uap.getCPU().architecture || "unknown";
+
+    // Specific check for macOS and Apple Silicon fallback
+    if (navigator.userAgent.toLowerCase().includes("macintosh")) {
+      osName = "macOS";
+      if (/arm|applewebkit.+mobile/i.test(navigator.userAgent)) {
+        cpuName = "arm64"; // Likely Apple Silicon
+      } else {
+        cpuName = "amd64"; // Intel Mac
+      }
     }
   }
 
