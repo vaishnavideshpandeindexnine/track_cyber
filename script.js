@@ -23,9 +23,10 @@ async function fetchData(url) {
 }
 
 async function detectPlatform() {
-  const uap = new UAParser(navigator?.userAgent);
+  const uap = new UAParser(navigator.userAgent);
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
+  console.log(osName);
 
   if (cpuName === "unknown" && navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
@@ -48,11 +49,11 @@ function getPlatformDetails(osName, cpuName, data) {
   cpuName = normalizeCPUName(cpuName);
 
   switch (osName) {
-    case "windows":
+    case "Windows":
       ({ link: downloadUrl, package: packageText } = data.Windows);
       platformText = osName;
       break;
-    case "macos":
+    case "macOS":
       if (cpuName === "amd64") {
         ({ link: downloadUrl, package: packageText } = data.macOS.Intel);
         platformText = "macOS (Intel)";
@@ -61,11 +62,11 @@ function getPlatformDetails(osName, cpuName, data) {
         platformText = "macOS (Apple Silicon)";
       }
       break;
-    case "ios":
+    case "iOS":
       ({ link: downloadUrl, package: packageText } = data.iOS);
       platformText = osName;
       break;
-    case "android":
+    case "Android":
       ({ link: downloadUrl, package: packageText } = data.Android);
       platformText = osName;
       break;
@@ -128,29 +129,17 @@ function updateUI(
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
 
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator?.userAgent); // Check if the browser is Safari
-
-  if (osName === "macos") {
+  if (osName === "macOS" && (cpuName === "unknown" || cpuName === "N/A")) {
     macDownloadButtons.style.display = "block";
+    defaultDownloadButton.style.display = "none";
 
-    if (isSafari) {
-      // If macOS and Safari, show both buttons
-      intelButton.style.display = "block";
-      appleSiliconButton.style.display = "block";
+    intelButton?.addEventListener("click", function () {
+      window.location.href = data.macOS.Intel.link;
+    });
 
-      // Set up download button actions
-      intelButton.addEventListener("click", function () {
-        window.location.href = data.macOS.Intel.link;
-      });
-
-      appleSiliconButton.addEventListener("click", function () {
-        window.location.href = data.macOS.AppleSilicon.link;
-      });
-    } else {
-      // If not Safari, you might want to show only one button or handle differently
-      intelButton.style.display = "none"; // Hide Intel button for non-Safari browsers
-      appleSiliconButton.style.display = "none"; // Hide Apple Silicon button for non-Safari browsers
-    }
+    appleSiliconButton?.addEventListener("click", function () {
+      window.location.href = data.macOS.AppleSilicon.link;
+    });
   } else {
     macDownloadButtons.style.display = "none";
 
