@@ -141,14 +141,16 @@ function updateUI(
     defaultDownloadButton.style.display = "none";
     platformText = "mac OS";
 
-    intelButton?.addEventListener("click", function () {
-      console.log("clicked Intel");
-
-      window.location.href = data.macOS.Intel.link;
-    });
-
-    appleSiliconButton?.addEventListener("touchstart", function () {
-      window.location.href = data.macOS.AppleSilicon.link;
+    macDownloadButtons?.addEventListener("click", function (event) {
+      if (event.target.classList.contains("downloadIntelButton")) {
+        console.log("Intel Button clicked");
+        window.location.href = data.macOS.Intel.link;
+      } else if (
+        event.target.classList.contains("downloadAppleSiliconButton")
+      ) {
+        console.log("Apple Silicon Button clicked");
+        window.location.href = data.macOS.AppleSilicon.link;
+      }
     });
   } else {
     macDownloadButtons.style.display = "none";
