@@ -115,7 +115,6 @@ function updateUI(
   const qrSubtitle = document.getElementById("qr-subtitle");
   const qrImage = document.getElementById("qr-image");
 
-  // Set QR code section for iOS and Android
   if (osName === "ios") {
     qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
     qrSubtitle.textContent = "Scan the QR code below for iOS:";
@@ -131,7 +130,6 @@ function updateUI(
     qrSection.style.display = "none";
   }
 
-  // Handle macOS download buttons
   const uap = new UAParser(navigator.userAgent);
   const isSafari = uap.getBrowser().name === "Safari";
 
@@ -143,7 +141,6 @@ function updateUI(
     defaultDownloadButton.style.display = "none";
     platformText = "mac OS";
 
-    // Add event listeners for Intel and Apple Silicon buttons
     intelButton?.addEventListener("click", function () {
       console.log("clicked Intel");
 
@@ -157,7 +154,6 @@ function updateUI(
     macDownloadButtons.style.display = "none";
     defaultDownloadButton.style.display = "block";
 
-    // Add event listener for the default download button
     defaultDownloadButton.addEventListener("touchstart", function () {
       if (downloadUrl !== "#") {
         window.location.href = downloadUrl;

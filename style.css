@@ -71,6 +71,7 @@
   background-color: #250a7f;
   color: white;
   border: none;
+  pointer-events: auto;
 }
 
 /* QR Section Base Styling */
