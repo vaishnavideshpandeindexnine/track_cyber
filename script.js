@@ -132,7 +132,7 @@ function updateUI(
   // Display both buttons for macOS when using Safari
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
-  if (osName === "macos") {
+  if (osName === "macos" || (osName === "macos" && isSafari)) {
     macDownloadButtons.style.display = "block";
     intelButton.style.display = "block"; // Show Intel button
     appleSiliconButton.style.display = "block"; // Show Apple Silicon button
