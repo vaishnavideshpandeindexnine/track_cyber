@@ -149,6 +149,8 @@ function updateUI(
 
     // Add event listeners for Intel and Apple Silicon buttons
     intelButton?.addEventListener("click", function () {
+      console.log("clicked Intel");
+
       window.location.href = data.macOS.Intel.link;
     });
 
