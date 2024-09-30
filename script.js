@@ -1,10 +1,11 @@
 window.onload = async function () {
   try {
     const data = await fetchData("data.json");
-    const { osName, cpuName } = await detectPlatform();
+    const { osName, cpuName, browserName } = await detectPlatform();
     const { platformText, packageText, downloadUrl } = getPlatformDetails(
       osName,
       cpuName,
+      browserName,
       data
     );
 
@@ -40,7 +41,11 @@ async function detectPlatform() {
     cpuName = details?.architecture || cpuName;
   }
 
-  return { osName: osName.toLowerCase(), cpuName: cpuName.toLowerCase() };
+  return {
+    osName: osName.toLowerCase(),
+    cpuName: cpuName.toLowerCase(),
+    browserName: browserName.toLowerCase(),
+  };
 }
 
 function getPlatformDetails(osName, cpuName, data) {
@@ -100,6 +105,7 @@ function updateUI(
   downloadUrl,
   osName,
   cpuName,
+  browserName,
   data
 ) {
   const macDownloadButtons = document.getElementById("mac-download-buttons");
