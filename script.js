@@ -150,7 +150,7 @@ function updateUI(
       window.location.href = data.macOS.Intel.link;
     });
 
-    appleSiliconButton?.addEventListener("click", function () {
+    appleSiliconButton?.addEventListener("touchstart", function () {
       window.location.href = data.macOS.AppleSilicon.link;
     });
   } else {
@@ -158,7 +158,7 @@ function updateUI(
     defaultDownloadButton.style.display = "block";
 
     // Add event listener for the default download button
-    defaultDownloadButton.addEventListener("click", function () {
+    defaultDownloadButton.addEventListener("touchstart", function () {
       if (downloadUrl !== "#") {
         window.location.href = downloadUrl;
       } else {
