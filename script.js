@@ -26,7 +26,6 @@ async function detectPlatform() {
   let osName = "unknown";
   let cpuName = "unknown";
 
-  // Use modern `userAgentData` for high-entropy platform detection
   if (navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
@@ -35,18 +34,15 @@ async function detectPlatform() {
     osName = details?.platform || "unknown";
     cpuName = details?.architecture || "unknown";
   } else {
-    // Fallback to user agent string detection for older browsers
     const uap = new UAParser(navigator.userAgent);
     osName = uap.getOS().name || "unknown";
     cpuName = uap.getCPU().architecture || "unknown";
-
-    // Specific check for macOS and Apple Silicon fallback
     if (navigator.userAgent.toLowerCase().includes("macintosh")) {
       osName = "macOS";
       if (/arm|applewebkit.+mobile/i.test(navigator.userAgent)) {
-        cpuName = "arm64"; // Likely Apple Silicon
+        cpuName = "arm64";
       } else {
-        cpuName = "amd64"; // Intel Mac
+        cpuName = "amd64";
       }
     }
   }
