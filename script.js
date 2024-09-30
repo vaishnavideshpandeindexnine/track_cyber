@@ -140,6 +140,7 @@ function updateUI(
     macDownloadButtons.style.display = "block";
     defaultDownloadButton.style.display = "none";
     platformText = "mac OS";
+    packageText = data.macOS.AppleSilicon.package;
 
     intelButton?.addEventListener("click", function () {
       console.log("clicked Intel");
