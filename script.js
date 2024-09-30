@@ -26,8 +26,11 @@ async function detectPlatform() {
   const uap = new UAParser(navigator.userAgent);
   let osName = uap.getOS().name || "unknown";
   let cpuName = uap.getCPU().architecture || "unknown";
-  console.log(osName);
+  let browserName = uap.getBrowser().name || "unknown";
 
+  console.log("Detected OS:", osName);
+  console.log("Detected CPU:", cpuName);
+  console.log("Detected Browser:", browserName);
   if (cpuName === "unknown" && navigator?.userAgentData) {
     const details = await navigator.userAgentData.getHighEntropyValues([
       "architecture",
