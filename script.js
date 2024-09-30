@@ -154,7 +154,7 @@ function updateUI(
     macDownloadButtons.style.display = "none";
     defaultDownloadButton.style.display = "block";
 
-    defaultDownloadButton.addEventListener("touchstart", function () {
+    defaultDownloadButton.addEventListener("click", function () {
       if (downloadUrl !== "#") {
         window.location.href = downloadUrl;
       } else {
