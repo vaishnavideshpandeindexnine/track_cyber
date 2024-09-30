@@ -36,7 +36,7 @@ async function detectPlatform() {
     cpuName = details?.architecture || cpuName;
   } else if (navigator.userAgent.toLowerCase().includes("macintosh")) {
     osName = "macOS";
-    cpuName = "amd64"; // Defaulting to Intel for macOS
+    cpuName = "amd64";
   }
 
   return { osName: osName.toLowerCase(), cpuName: cpuName.toLowerCase() };
