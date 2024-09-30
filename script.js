@@ -144,7 +144,6 @@ function updateUI(
 
     intelButton?.addEventListener("click", function () {
       console.log("clicked Intel");
-
       window.location.href = data.macOS.Intel.link;
     });
 
