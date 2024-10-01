@@ -35,9 +35,11 @@
   background-color: #250a7f;
   color: white;
   text-align: center;
-  display: block;
   margin: 0 auto;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .info-section {

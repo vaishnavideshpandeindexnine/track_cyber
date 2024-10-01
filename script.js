@@ -108,12 +108,14 @@ function updateUI(
   const appleSiliconButton = document.querySelector(
     ".downloadAppleSiliconButton"
   );
-  const defaultDownloadButton = document.querySelector(".downloadButton");
-
+  const defaultDownloadButton = document.getElementById("defaultButton");
   const qrSection = document.getElementById("qr-section");
   const qrTitle = document.getElementById("qr-title");
   const qrSubtitle = document.getElementById("qr-subtitle");
   const qrImage = document.getElementById("qr-image");
+
+  defaultDownloadButton.style.display = "none";
+  macDownloadButtons.style.display = "none";
 
   if (osName === "ios") {
     qrTitle.textContent = "Want to protect your iOS device with TrackCyber?";
@@ -126,8 +128,6 @@ function updateUI(
     qrSubtitle.textContent = "Scan the QR code below for Android:";
     qrImage.src = "assets/Play store QR.svg";
     qrSection.style.display = "block";
-  } else {
-    qrSection.style.display = "none";
   }
 
   const uap = new UAParser(navigator.userAgent);
@@ -138,30 +138,24 @@ function updateUI(
     (cpuName === "unknown" || cpuName === "N/A" || isSafari)
   ) {
     macDownloadButtons.style.display = "block";
-    defaultDownloadButton.style.display = "none";
-    platformText = "mac OS";
+    platformText = "macOS";
     packageText = "TrackCyber.dmg";
 
     intelButton?.addEventListener("click", function () {
-      console.log("clicked Intel");
       window.location.href = data.macOS.Intel.link;
     });
 
     appleSiliconButton?.addEventListener("click", function () {
       window.location.href = data.macOS.AppleSilicon.link;
     });
-  } else {
-    macDownloadButtons.style.display = "none";
+  } else if (["ios", "android", "windows", "macos"].includes(osName)) {
     defaultDownloadButton.style.display = "block";
 
     defaultDownloadButton.addEventListener("click", function () {
-      if (downloadUrl !== "#") {
-        window.location.href = downloadUrl;
-      } else {
-        alert("Download URL not available.");
-      }
+      window.location.href = downloadUrl;
     });
   }
+
   // Update platform and package texts
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
