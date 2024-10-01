@@ -156,7 +156,6 @@ function updateUI(
     });
   }
 
-  // Update platform and package texts
   document.querySelector("#platform").textContent = platformText || "N/A";
   document.querySelector("#package").textContent = packageText || "N/A";
 }
