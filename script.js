@@ -149,6 +149,7 @@ function updateUI(
       window.location.href = data.macOS.AppleSilicon.link;
     });
   } else if (["ios", "android", "windows", "macos"].includes(osName)) {
+    macDownloadButtons.style.display = "none";
     defaultDownloadButton.style.display = "block";
 
     defaultDownloadButton.addEventListener("click", function () {
