@@ -97,6 +97,20 @@ To update the download links or package names:
 - **iOS**: Provides an `.ipa` package.
 - **Android**: Provides an `.apk` package.
 
+## Safari-Specific Behavior on macOS
+
+When a user is browsing the page on macOS Safari, two download buttons are displayed, allowing them to choose between the Intel and Apple Silicon versions of the installer. This feature is implemented due to Safari's limitations in accurately detecting CPU architecture in certain cases. By presenting both options, the user can manually select the correct installer for their system.
+
+### How It Works
+
+- The script detects if the user is using Safari on macOS.
+- If Safari is detected, two download buttons are shown:
+
+1. One for Intel-based Macs.
+2. Another for Apple Silicon-based Macs.
+
+- This provides flexibility for users who may be uncertain about their CPU architecture.
+
 ## Responsive Design
 
 The page layout adapts to different screen sizes. The media queries ensure that the design looks good on:
